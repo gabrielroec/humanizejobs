@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { AnimatePresence, motion } from "framer-motion";
@@ -70,7 +70,7 @@ const LatestJobsCard = ({ job }) => {
 
   return (
     <div
-      className="px-2 pt-2 pb-4 rounded-2xl shadow-xl border border-gray-200 relative"
+      className="px-2 pt-2 pb-4 rounded-2xl shadow-xl border border-gray-200 relative overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setShowCircle(true)}
       onMouseLeave={() => setShowCircle(false)}
@@ -109,20 +109,18 @@ const LatestJobsCard = ({ job }) => {
           <p> {job.salary}</p>
           <p className="text-sm text-gray-600">{job.salaryTime}</p>
         </div>
-        <Button className="rounded-full hover:bg-[#0a66c2]" style={{ cursor: "none" }}>
-          Detalhes
-        </Button>
+        <Button className="rounded-full hover:bg-[#0a66c2]">Detalhes</Button>
       </div>
 
       <AnimatePresence>
         {showCircle && (
           <motion.div
-            className="absolute bg-white rounded-full pointer-events-none"
+            className="absolute bg-white rounded-full pointer-events-none "
             style={{
-              width: "80px",
-              height: "80px",
-              top: mousePosition.y - 40,
-              left: mousePosition.x - 40,
+              width: "120px",
+              height: "120px",
+              top: mousePosition.y - 55,
+              left: mousePosition.x - 55,
               mixBlendMode: "difference",
             }}
             initial={{ scale: 0 }}
