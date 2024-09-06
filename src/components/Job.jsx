@@ -3,8 +3,9 @@ import useMouse from "@react-hook/mouse-position";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { Bookmark } from "lucide-react";
 
-const LatestJobsCard = ({ job }) => {
+const Job = ({ job }) => {
   const backgroundColors = [
     "rgba(10, 102, 194, 0.1)", // Azul
     "rgba(84, 10, 194, 0.1)", // Roxo
@@ -16,6 +17,7 @@ const LatestJobsCard = ({ job }) => {
 
   const [randomBackgroundColor] = useState(backgroundColors[Math.floor(Math.random() * backgroundColors.length)]);
   const [cursorText, setCursorText] = useState("");
+  const [isHoveringBookmark, setIsHoveringBookmark] = useState(false);
   const [cursorVariant, setCursorVariant] = useState("small");
   const [isHoveringButton, setIsHoveringButton] = useState(false); // Estado para detectar hover no botão
 
@@ -39,9 +41,9 @@ const LatestJobsCard = ({ job }) => {
       opacity: 1,
       height: 80,
       width: 80,
-      backgroundColor: isHoveringButton ? "#1e91d6" : "#fff", // Muda para azul quando hover no botão
+      backgroundColor: isHoveringButton || isHoveringBookmark ? "#1e91d6" : "#fff", // Muda para azul quando hover no botão ou no bookmark
       color: "#000",
-      x: mouse.x ? mouse.x - 390 : 0, // Subtrai a metade da largura do círculo
+      x: mouse.x ? mouse.x - 270 : 0, // Subtrai a metade da largura do círculo
       y: mouse.y ? mouse.y - 70 : 0, // Subtrai a metade da altura do círculo
       transition: {
         type: "spring",
@@ -81,7 +83,9 @@ const LatestJobsCard = ({ job }) => {
               transformOrigin: "center",
             }}
           >
-            <span className="cursorText">{isHoveringButton ? "😎" : cursorText}</span> {/* Emoji no hover */}
+            <span className="cursorText">
+              {isHoveringButton ? "😎" : isHoveringBookmark ? <Bookmark className="text-white" /> : cursorText}
+            </span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -118,16 +122,27 @@ const LatestJobsCard = ({ job }) => {
           <p>{job.salary}</p>
           <p className="text-sm text-gray-600">{job.salaryTime}</p>
         </div>
-        <Button
-          className="rounded-full hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
-          onMouseEnter={() => setIsHoveringButton(true)} // Detecta hover no botão
-          onMouseLeave={() => setIsHoveringButton(false)} // Sai do hover no botão
-        >
-          Detalhes
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button
+            className="rounded-full hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
+            onMouseEnter={() => setIsHoveringButton(true)} // Detecta hover no botão
+            onMouseLeave={() => setIsHoveringButton(false)} // Sai do hover no botão
+          >
+            Detalhes
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full"
+            size="icon"
+            onMouseEnter={() => setIsHoveringBookmark(true)} // Detecta hover no Bookmark
+            onMouseLeave={() => setIsHoveringBookmark(false)} // Sai do hover no Bookmark
+          >
+            <Bookmark />
+          </Button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default LatestJobsCard;
+export default Job;
